@@ -12,16 +12,17 @@
   enter the compilation commands directly. To complete this worksheet you will
   need a single C source file, and a text editor. Which one doesn’t matter.
 
-
+- add a file to your project called main.c. 
+- To create it you can either start a new file in your text editor or if you’re
+  on Linux or a Mac, make a new empty file my typing touch main.c and opening
+  that. Either method works the same.
+- Add this to it:
 #+begin_src c
 int main() {
 return 0;
 }
 #+end_src
-- add a file to your project called main.c. 
-- To create it you can either start a new file in your text editor or if you’re
-  on Linux or a Mac, make a new empty file my typing touch main.c and opening
-  that. Either method works the same.
+- Then save and compile the resulting file. The Compilation command is: 
 - *gcc -S main.c*
 - If all goes well this will finish.  The *-S* tells the compiler you want it to
   output the compilation results in assembly language, not the native binary

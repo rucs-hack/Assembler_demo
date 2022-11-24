@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2022-11-24 Thu 05:04 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Introduction To Assembler</title>
+<meta name="author" content="Dr Carey Pridgeon" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Introduction To Assembler</h1>
+<div id="outline-container-org238b118" class="outline-2">
+<h2 id="org238b118"><span class="section-number-2">1.</span> 1. 	Introduction To Assembler on X86 processors</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>Start a C project, in whatever environment you have available called
+assembler. The only limiting factor is this environment must allow you to
+enter the compilation commands directly. To complete this worksheet you will
+need a single C source file, and a text editor. Which one doesn’t matter.</li>
+
+<li>add a file to your project called main.c.</li>
+<li>To create it you can either start a new file in your text editor or if you’re
+on Linux or a Mac, make a new empty file my typing touch main.c and opening
+that. Either method works the same.</li>
+<li>Add this to it:</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">int</span> <span style="color: #ff0000;">main</span>() {
+<span style="color: #0000cd;">return</span> 0;
+}
+</pre>
+</div>
+<ul class="org-ul">
+<li>Then save and compile the resulting file. The Compilation command is:</li>
+<li><b>gcc -S main.c</b></li>
+<li>If all goes well this will finish.  The <b>-S</b> tells the compiler you want it to
+output the compilation results in assembly language, not the native binary
+used by your computers hardware.</li>
+<li>Typing <b>ls</b> will show you have succeeded in generating a file called main.s
+that contains the assembler version of your c code.</li>
+<li>Read the output by loading <b>main.s</b>.</li>
+</ul>
+<p>
+using the command <b>nano main.s</b>
+</p>
+<div class="org-src-container">
+<pre class="src src-asm">        <span style="color: #0000cd;">.file</span>   <span style="color: #8b008b;">"main.c"</span>
+        <span style="color: #0000cd;">.text</span>
+        <span style="color: #0000cd;">.globl</span>  main
+        <span style="color: #0000cd;">.type</span>   main, @function
+<span style="color: #ff0000;">main</span>:
+<span style="color: #ff0000;">.LFB0</span>:
+        <span style="color: #0000cd;">.cfi_startproc</span>
+        <span style="color: #0000cd;">pushq</span>   <span style="color: #a0522d;">%rbp</span>
+        <span style="color: #0000cd;">.cfi_def_cfa_offset</span> 16
+        <span style="color: #0000cd;">.cfi_offset</span> 6, -16
+        <span style="color: #0000cd;">movq</span>    <span style="color: #a0522d;">%rsp</span>, <span style="color: #a0522d;">%rbp</span>
+        <span style="color: #0000cd;">.cfi_def_cfa_register</span> 6
+        <span style="color: #0000cd;">movl</span>    $0, <span style="color: #a0522d;">%eax</span>
+        <span style="color: #0000cd;">popq</span>    <span style="color: #a0522d;">%rbp</span>
+        <span style="color: #0000cd;">.cfi_def_cfa</span> 7, 8
+        <span style="color: #0000cd;">ret</span>
+        <span style="color: #0000cd;">.cfi_endproc</span>
+<span style="color: #ff0000;">.LFE0</span>:
+        <span style="color: #0000cd;">.size</span>   main, .-main
+        <span style="color: #0000cd;">.ident</span>  <span style="color: #8b008b;">"GCC: (Ubuntu 4.8.4-2ubuntu1~14.04.3) 4.8.4"</span>
+        <span style="color: #0000cd;">.section</span>        .note.GNU-stack,<span style="color: #8b008b;">""</span>,@progbits
+</pre>
+</div>
+<ul class="org-ul">
+<li>This assembler is just setting up the process to run.</li>
+<li>Use this output as a baseline to compare against for further exercises.</li>
+<li>The section that has the new code (beyond fundamental setup and process
+closing) is:</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-asm"><span style="color: #0000cd;">.cfi_def_cfa_register</span> 6
+<span style="color: #b22222;">// </span><span style="color: #b22222;">new code will be here</span>
+<span style="color: #ff0000;">movl</span>    <span style="color: #0000cd;">$0</span>, <span style="color: #a0522d;">%eax</span>
+</pre>
+</div>
+<ul class="org-ul">
+<li>Next we will be typing code in the main function that actually does
+something, so in the gap above
+<b>return 0;</b></li>
+<li>Add this code:</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">int</span> <span style="color: #a0522d;">a</span> = 2;
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>Save and compile the code again, then inspect the output as before.</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-asm">        <span style="color: #0000cd;">.file</span>   <span style="color: #8b008b;">"main.c"</span>
+        <span style="color: #0000cd;">.text</span>
+        <span style="color: #0000cd;">.globl</span>  main
+        <span style="color: #0000cd;">.type</span>   main, @function
+<span style="color: #ff0000;">main</span>:
+<span style="color: #ff0000;">.LFB0</span>:
+        <span style="color: #0000cd;">.cfi_startproc</span>
+        <span style="color: #0000cd;">pushq</span>   <span style="color: #a0522d;">%rbp</span>
+        <span style="color: #0000cd;">.cfi_def_cfa_offset</span> 16
+        <span style="color: #0000cd;">.cfi_offset</span> 6, -16
+        <span style="color: #0000cd;">movq</span>    <span style="color: #a0522d;">%rsp</span>, <span style="color: #a0522d;">%rbp</span>
+        <span style="color: #0000cd;">.cfi_def_cfa_register</span> 6
+        <span style="color: #0000cd;">movl</span>    $2, -4(<span style="color: #a0522d;">%rbp</span>)
+        <span style="color: #0000cd;">movl</span>    $0, <span style="color: #a0522d;">%eax</span>
+        <span style="color: #0000cd;">popq</span>    <span style="color: #a0522d;">%rbp</span>
+        <span style="color: #0000cd;">.cfi_def_cfa</span> 7, 8
+        <span style="color: #0000cd;">ret</span>
+        <span style="color: #0000cd;">.cfi_endproc</span>
+<span style="color: #ff0000;">.LFE0</span>:
+        <span style="color: #0000cd;">.size</span>   main, .-main
+        <span style="color: #0000cd;">.ident</span>  <span style="color: #8b008b;">"GCC: (Ubuntu 4.8.4-2ubuntu1~14.04.3) 4.8.4"</span>
+        <span style="color: #0000cd;">.section</span>        .note.GNU-stack,<span style="color: #8b008b;">""</span>,@progbits
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>So now the code</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-asm"><span style="color: #ff0000;">movl</span>    <span style="color: #0000cd;">$2</span>, -4(<span style="color: #a0522d;">%rbp</span>)
+</pre>
+</div>
+<ul class="org-ul">
+<li>Has appeared.</li>
+<li>This is assembler storing the literal value 2 (<i>$</i> means
+literal) in the variable we have decided to call <b>a</b> in one of its
+15 counting registers, in the fourth one along specifically and
+exited.</li>
+
+<li>So lets retrieve and increment the variable next</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-c">a = a+5;
+</pre>
+</div>
+<ul class="org-ul">
+<li>Now we get, after recompiling main.c:</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-asm"><span style="color: #ff0000;">movl</span>    <span style="color: #0000cd;">$2</span>, -4(<span style="color: #a0522d;">%rbp</span>)
+<span style="color: #ff0000;">addl</span>    <span style="color: #0000cd;">$5</span>, -4(<span style="color: #a0522d;">%rbp</span>)
+</pre>
+</div>
+<ul class="org-ul">
+<li>So now we see that the value in -4(%rbp) has had the literal value 5
+added to it.</li>
+<li>So, lets add a new variable to the program</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">int</span> <span style="color: #a0522d;">b</span> = 0;
+</pre>
+</div>
+<ul class="org-ul">
+<li>This now gives us</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-asm"><span style="color: #ff0000;">movl</span>    <span style="color: #0000cd;">$2</span>, -8(<span style="color: #a0522d;">%rbp</span>)
+<span style="color: #ff0000;">movl</span>    <span style="color: #0000cd;">$0</span>, -4(<span style="color: #a0522d;">%rbp</span>)
+<span style="color: #ff0000;">addl</span>    <span style="color: #0000cd;">$5</span>, -8(<span style="color: #a0522d;">%rbp</span>)
+</pre>
+</div>
+<ul class="org-ul">
+<li>So the 8th register in %rbp has been initialised with 0.</li>
+
+<li>So far we've only worked with literals, lets add a to b.</li>
+<li>add the line</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-c">b+=a;
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-asm"><span style="color: #ff0000;">movl</span>    <span style="color: #0000cd;">$2</span>, -8(<span style="color: #a0522d;">%rbp</span>)
+<span style="color: #ff0000;">movl</span>    <span style="color: #0000cd;">$0</span>, -4(<span style="color: #a0522d;">%rbp</span>)
+<span style="color: #ff0000;">addl</span>    <span style="color: #0000cd;">$5</span>, -8(<span style="color: #a0522d;">%rbp</span>)
+<span style="color: #ff0000;">movl</span>    -8(<span style="color: #a0522d;">%rbp</span>), <span style="color: #a0522d;">%eax</span>
+<span style="color: #ff0000;">addl</span>    <span style="color: #0000cd;">%eax</span>, -4(<span style="color: #a0522d;">%rbp</span>)
+</pre>
+</div>
+<ul class="org-ul">
+<li>Now the value in <b>-4(%rbp)</b> (our <b>a</b> variable), has been moved into
+<b>%eax</b> register (an accumulator), from there it has been added to <b>-8(%rbp)</b>
+(our <b>b</b> variable).</li>
+</ul>
+</div>
+<div id="outline-container-orgcb21983" class="outline-3">
+<h3 id="orgcb21983"><span class="section-number-3">1.1.</span> Subtraction</h3>
+<div class="outline-text-3" id="text-1-1">
+<ul class="org-ul">
+<li>Add the code</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">int</span> <span style="color: #a0522d;">c</span> = b - 3;
+</pre>
+</div>
+<ul class="org-ul">
+<li>Recompile, and our assembly block becomes</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-asm"><span style="color: #ff0000;">movl</span>    <span style="color: #0000cd;">$2</span>, -12(<span style="color: #a0522d;">%rbp</span>)
+<span style="color: #ff0000;">movl</span>    <span style="color: #0000cd;">$0</span>, -8(<span style="color: #a0522d;">%rbp</span>)
+<span style="color: #ff0000;">addl</span>    <span style="color: #0000cd;">$5</span>, -12(<span style="color: #a0522d;">%rbp</span>)
+<span style="color: #ff0000;">movl</span>    -12(<span style="color: #a0522d;">%rbp</span>), <span style="color: #a0522d;">%eax</span>
+<span style="color: #ff0000;">addl</span>    <span style="color: #0000cd;">%eax</span>, -8(<span style="color: #a0522d;">%rbp</span>)
+<span style="color: #ff0000;">movl</span>    -8(<span style="color: #a0522d;">%rbp</span>), <span style="color: #a0522d;">%eax</span>
+<span style="color: #ff0000;">subl</span>    <span style="color: #0000cd;">$3</span>, <span style="color: #a0522d;">%eax</span>
+<span style="color: #ff0000;">movl</span>    <span style="color: #0000cd;">%eax</span>, -4(<span style="color: #a0522d;">%rbp</span>)
+</pre>
+</div>
+<ul class="org-ul">
+<li>Of which the new code is</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-asm"><span style="color: #ff0000;">movl</span>    -8(<span style="color: #a0522d;">%rbp</span>), <span style="color: #a0522d;">%eax</span>
+<span style="color: #ff0000;">subl</span>    <span style="color: #0000cd;">$3</span>, <span style="color: #a0522d;">%eax</span>
+<span style="color: #ff0000;">movl</span>    <span style="color: #0000cd;">%eax</span>, -4(<span style="color: #a0522d;">%rbp</span>)
+</pre>
+</div>
+<ul class="org-ul">
+<li>The value in <b>-8(%rbp)</b> is moved into <b>eax</b></li>
+<li>The literal value 3 is subtracted from it, and the result is stored
+in the register <b>-4(%rbp)</b> as our new variable <b>c</b>.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org8dbc77f" class="outline-3">
+<h3 id="org8dbc77f"><span class="section-number-3">1.2.</span> Looping</h3>
+<div class="outline-text-3" id="text-1-2">
+<ul class="org-ul">
+<li>In programming we often need to repeat operations. For this we use
+several forms of loop.</li>
+<li>We will add a simple for loop to our program so we can examine it
+in assembler.</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">int</span> <span style="color: #a0522d;">i</span>;                                                                                                    
+<span style="color: #0000cd;">for</span> (i=0;i&lt;5;i++) {                                      
+  c+=2;                                       
+}                                              
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>Edit your c program adding a new var <b>i</b> to
+use in the for loop, and a loop that adds <b>1</b> to <b>c</b> five times.</li>
+<li>Compile, then view the assembler.</li>
+<li>You will see the places variables are stored has moved. This is
+because the compiler is deciding where to store things, not us.</li>
+<li>The new block of interest is:</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-asm">        <span style="color: #0000cd;">movl</span>    $0, -12(<span style="color: #a0522d;">%rbp</span>)
+        <span style="color: #0000cd;">jmp</span>     .L2
+<span style="color: #ff0000;">.L3</span>:
+        <span style="color: #0000cd;">addl</span>    $2, -16(<span style="color: #a0522d;">%rbp</span>)
+        <span style="color: #0000cd;">addl</span>    $1, -12(<span style="color: #a0522d;">%rbp</span>)
+<span style="color: #ff0000;">.L2</span>:
+        <span style="color: #0000cd;">cmpl</span>    $4, -12(<span style="color: #a0522d;">%rbp</span>)
+        <span style="color: #0000cd;">jle</span>     .L3
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orga5512b4" class="outline-3">
+<h3 id="orga5512b4"><span class="section-number-3">1.3.</span> Looping - Line by Line</h3>
+<div class="outline-text-3" id="text-1-3">
+<div class="org-src-container">
+<pre class="src src-asm"><span style="color: #ff0000;">movl</span>    <span style="color: #0000cd;">$0</span>, -12(<span style="color: #a0522d;">%rbp</span>)
+</pre>
+</div>
+<ul class="org-ul">
+<li>This is a for loop, so first line of assembler sets up the loop control var
+<b>i</b>.</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-asm"><span style="color: #ff0000;">addl</span>    <span style="color: #0000cd;">$2</span>, -16(<span style="color: #a0522d;">%rbp</span>)
+<span style="color: #ff0000;">jmp</span>     .L2
+</pre>
+</div>
+<ul class="org-ul">
+<li>Loops in assembler work by jumping around the code, using labels to
+set destination points.</li>
+<li>This loop starts by jumping to label L2.</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-asm"><span style="color: #ff0000;">.L2</span>:
+        <span style="color: #0000cd;">cmpl</span>    $4, -4(<span style="color: #a0522d;">%rbp</span>)
+        <span style="color: #0000cd;">jle</span>     .L3
+</pre>
+</div>
+<ul class="org-ul">
+<li>At L2 there is a comparison to see whether the loop has ended (is
+i still less than or equal to 4).</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-asm"><span style="color: #ff0000;">jle</span>     .L3
+</pre>
+</div>
+<ul class="org-ul">
+<li><b>jle</b> means 'Jump if less than or equal' The jump target is L3,
+which contains the logic the loop is performing (minimal in this example).</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-asm">
+<span style="color: #ff0000;">.L3</span>:
+        <span style="color: #0000cd;">addl</span>    $2, -8(<span style="color: #a0522d;">%rbp</span>)
+        <span style="color: #0000cd;">addl</span>    $1, -4(<span style="color: #a0522d;">%rbp</span>)
+</pre>
+</div>
+<ul class="org-ul">
+<li>Here 2 is being added to <b>-8(%rbp)</b> (var <b>c</b>), and one is being
+added to the iteration varable <b>i</b> <b>-4(%rbp)</b></li>
+<li>The loop ends when <b>jle</b> returns false (<b>i&gt;4</b>).</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Dr Carey Pridgeon</p>
+<p class="date">Created: 2022-11-24 Thu 05:04</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+
+img, a {border:none, outline: none;}
+
+.reveal table th, .reveal table td {
+    text-align: center;
+    border: 1px solid white;
+}
+
+.reveal pre {
+    width: 100%;
+    border: none;
+    box-shadow: none;
+}
+
+.main .row img {
+    display: inline-block;
+    border: 0px;
+    background-color: transparent;
+}
+
+.noborder .reveal section img {
+  background:none; 
+  border:none; 
+  box-shadow:none;
+  }

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Deadlock</title>
+<meta name="author" content="(Dr Carey Pridgeon)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css"/>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/night.css" id="theme"/>
+
+<link rel="stylesheet" href="../css/presentation.css"/>
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'https://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide"><h1 class="title">Deadlock</h1><h2 class="author">Dr Carey Pridgeon</h2><p class="date">Created: 2021-01-26 Tue 15:46</p>
+</section>
+<section>
+<section id="slide-sec-">
+<h2 id="org4687d6c">Deadlock</h2>
+<div class="outline-text-2" id="text-org4687d6c">
+</div>
+</section>
+</section>
+<section>
+<section id="slide-sec-">
+<h3 id="org7bc8f87">Deadlock</h3>
+<ul>
+<li>What Deadlock is and how to avoid it.</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-sec-">
+<h3 id="org5ec0c5f"></h3>
+<ul>
+<li>This occurs when two or more threads need more than one shared resource in
+order to complete a task.</li>
+
+</ul>
+
+<div class="figure">
+<p><img src="img/deadlock.png" alt="deadlock.png" />
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-sec-">
+<h3 id="org4a642bb"></h3>
+<ul>
+<li>Unless access to these resources is strictly controlled by means of careful
+program design, deadlock can easily happen.</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-sec-">
+<h3 id="org2def931">Preventative measures</h3>
+<ul>
+<li><b>Condition Variables</b>
+<ul>
+<li>By introducing an extra layer of control, being imposing order of access
+rather than simply granting of access, Condition variables can go some way in
+prevention of deadlock.</li>
+
+</ul></li>
+<li>They can also, if used correctly, be used to release resources if held for too
+long without a complete set of requirements (all required resources) being
+met. This is complex to code, and not something we can cover.</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-sec-">
+<h3 id="orgb6839cd">Curative Measures</h3>
+<ul>
+<li>Here we have two options</li>
+<li><b>Deadlock Breaking Algorithms</b>
+<ul>
+<li>These act after the system in question has been in a state of deadlock for a
+set period of time, typically numbered in milliseconds or less. It works by forcing
+all resource gathering threads to let go of all of their resources and start
+again. Essentially a soft reset.</li>
+
+</ul></li>
+<li><b>Redundant System</b>
+<ul>
+<li>The second option, cheaper and becoming more common as hardware gets cheaper,
+is to emplace a duplicate system, running in parallel and ready to take over
+if the first system locks up.</li>
+
+</ul></li>
+
+</ul>
+
+
+
+</section>
+</section>
+<section>
+<section id="slide-sec-">
+<h3 id="org881b883">Obligatory  XKCD</h3>
+
+<div class="figure">
+<p><img src="img/travelling_salesman_problem.png" alt="travelling_salesman_problem.png" />
+</p>
+</div>
+<ul>
+<li>Copyright: Randall Munroe</li>
+<li>Mirrored to avoid bandwidth stealing</li>
+<li>This Lecture is Licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a></li>
+<li>By Dr Carey Pridgeon Coventry University, UK, 2021</li>
+
+</ul>
+</section>
+</section>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
+<script src="https://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: true,
+center: true,
+slideNumber: 'c',
+rollingLinks: true,
+keyboard: true,
+overview: true,
+width: 1200,
+height: 800,
+margin: 0.20,
+minScale: 0.50,
+maxScale: 2.50,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'none', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'https://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+ { src: 'https://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'https://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'https://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: 'https://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
+});
+</script>
+</body>
+</html>
